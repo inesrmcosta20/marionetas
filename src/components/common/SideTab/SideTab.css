@@ -1,10 +1,10 @@
 .side-tab {
-  position: absolute;
   display: flex;
   align-items: center;
   margin-bottom: 15px;
   transition: all 0.3s ease;
-  
+  position: relative;
+  height: 60px; /* Mesma altura do trigger */
 }
 
 .side-tab-left {
@@ -18,14 +18,27 @@
 .side-tab-left .side-tab-content {
   order: 2;
   margin-left: -10px;
-  transform: translateX(-100%);
+  transform: translateX(-100%) scale(0.8);
   opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: 70px; /* Posiciona ao lado do trigger */
+  top: 0;
+  z-index: 100;
+  height: 60px; /* Mesma altura do trigger */
+  border-radius: 30px; /* Mantém circular */
+  width: 60px; /* Mesma largura do trigger */
+  overflow: hidden;
 }
 
 .side-tab-left.side-tab-open .side-tab-content {
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
   opacity: 1;
+  visibility: visible;
   margin-left: 0;
+  border-radius: 30px; /* Mantém circular */
+  height: 60px; /* Mantém mesma altura */
+  width: 300px; /* Expande apenas a largura */
 }
 
 .side-tab-right {
@@ -37,16 +50,29 @@
 }
 
 .side-tab-right .side-tab-content {
-  order: 2;
+  order: 1;
   margin-right: -10px;
-  transform: translateX(100%);
+  transform: translateX(100%) scale(0.8);
   opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  right: 70px; /* Posiciona ao lado do trigger */
+  top: 0;
+  z-index: 100;
+  height: 60px; /* Mesma altura do trigger */
+  border-radius: 30px; /* Mantém circular */
+  width: 60px; /* Mesma largura do trigger */
+  overflow: hidden;
 }
 
 .side-tab-right.side-tab-open .side-tab-content {
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
   opacity: 1;
+  visibility: visible;
   margin-right: 0;
+  border-radius: 30px; /* Mantém circular */
+  height: 60px; /* Mantém mesma altura */
+  width: 300px; /* Expande apenas a largura */
 }
 
 .side-tab-trigger {
@@ -62,7 +88,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 20;
   transition: all 0.2s ease;
-  position: absolute;
+  position: relative;
 }
 
 .side-tab-trigger:hover {
@@ -94,42 +120,23 @@
 
 .side-tab-content {
   background: white;
-  border-radius: 50px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border: 2px solid #007bff;
-  max-height: 60px ;
-  min-width: 300px;
-  max-width: 400px;
   transition: all 0.3s ease;
   z-index: 10;
   overflow: hidden;
-}
-
-.tab-header {
-  background: #007bff;
-  color: white;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tab-header h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.item-count {
-  background: rgba(255, 255, 255, 0.3);
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
+  height: 100%;
 }
 
 .tab-body {
   padding: 0;
-  max-height: 400px;
+  height: 100%;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.1s;
+  width: 100%;
+}
+
+.side-tab-open .tab-body {
+  opacity: 1;
 }

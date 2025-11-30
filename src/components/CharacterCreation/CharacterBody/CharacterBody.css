@@ -1,10 +1,11 @@
 .character-body {
   position: relative;
-  width: 300px;
-  height: 400px;
+  width: 400px;  /* Aumentado de 300px para 400px */
+  height: 500px; /* Aumentado de 400px para 500px */
   border: 2px dashed #ccc;
   border-radius: 10px;
   background: #f8f9fa;
+  overflow: visible;
 }
 
 .character-base {
@@ -12,32 +13,33 @@
   flex-direction: column;
   align-items: center;
   pointer-events: none;
-  padding: 20px;
+  padding: 30px; /* Aumentado o padding */
+  height: 100%;
 }
 
 .head {
   border: 2px solid #333;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
+  width: 100px; /* Aumentado de 80px para 100px */
+  height: 100px; /* Aumentado de 80px para 100px */
+  margin-bottom: 15px;
 }
 
 .up {
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .tronco {
-  width: 60px;
-  height: 80px;
+  width: 80px; /* Aumentado de 60px para 80px */
+  height: 100px; /* Aumentado de 80px para 100px */
   border: 2px solid #333;
 }
 
 .left-arm, .right-arm {
-  width: 30px;
-  height: 60px;
+  width: 40px; /* Aumentado de 30px para 40px */
+  height: 80px; /* Aumentado de 60px para 80px */
   border: 2px solid #333;
 }
 
@@ -47,23 +49,7 @@
 }
 
 .left-leg, .right-leg {
-  width: 30px;
-  height: 80px;
+  width: 40px; /* Aumentado de 30px para 40px */
+  height: 100px; /* Aumentado de 80px para 100px */
   border: 2px solid #333;
-}
-
-.character-item {
-  position: absolute;
-  padding: 8px 12px;
-  background-color: white;
-  border: 2px solid #007bff;
-  border-radius: 6px;
-  cursor: pointer;
-  z-index: 10;
-  font-size: 12px;
-}
-
-.character-item.selected {
-  border-color: #dc3545;
-  background-color: #f8d7da;
 }

@@ -1,47 +1,58 @@
-export const characterToolbarItems = {
-  tops: [
-    { id: 1, name: 'T-Shirt', type: 'top', colorable: true, category: 'clothing', emoji: '👕', icon: '👕' },
-    { id: 2, name: 'Shirt', type: 'top', colorable: true, category: 'clothing', emoji: '👔', icon: '👔' },
-    { id: 3, name: 'Dress', type: 'top', colorable: true, category: 'clothing', emoji: '👗', icon: '👗' },
-    { id: 4, name: 'Jacket', type: 'top', colorable: true, category: 'clothing', emoji: '🧥', icon: '🧥' },
-    { id: 5, name: 'Tank Top', type: 'top', colorable: true, category: 'clothing', emoji: '🎽', icon: '🎽' },
-  ],
-  bottoms: [
-    { id: 6, name: 'Pants', type: 'bottom', colorable: true, category: 'clothing', emoji: '👖', icon: '👖' },
-    { id: 7, name: 'Shorts', type: 'bottom', colorable: true, category: 'clothing', emoji: '🩳', icon: '🩳' },
-    { id: 8, name: 'Skirt', type: 'bottom', colorable: true, category: 'clothing', emoji: '👘', icon: '👘' },
-    { id: 9, name: 'Jeans', type: 'bottom', colorable: true, category: 'clothing', emoji: '👖', icon: '👖' },
-  ],
-  hair: [
-    { id: 10, name: 'Short Hair', type: 'hair', colorable: true, category: 'appearance', emoji: '💇‍♂️', icon: '💇' },
-    { id: 11, name: 'Long Hair', type: 'hair', colorable: true, category: 'appearance', emoji: '💇‍♀️', icon: '💇' },
-    { id: 12, name: 'Curly Hair', type: 'hair', colorable: true, category: 'appearance', emoji: '🦱', icon: '🦱' },
-    { id: 13, name: 'Ponytail', type: 'hair', colorable: true, category: 'appearance', emoji: '💁‍♀️', icon: '💁' },
-    { id: 14, name: 'Afro', type: 'hair', colorable: true, category: 'appearance', emoji: '🦳', icon: '🦳' },
-  ],
-  hats: [
-    { id: 15, name: 'Cap', type: 'hat', colorable: true, category: 'accessories', emoji: '🧢', icon: '🧢' },
-    { id: 16, name: 'Hat', type: 'hat', colorable: true, category: 'accessories', emoji: '👒', icon: '👒' },
-    { id: 17, name: 'Beanie', type: 'hat', colorable: true, category: 'accessories', emoji: '🧣', icon: '🧣' },
-    { id: 18, name: 'Crown', type: 'hat', colorable: true, category: 'accessories', emoji: '👑', icon: '👑' },
-    { id: 19, name: 'Helmet', type: 'hat', colorable: true, category: 'accessories', emoji: '⛑️', icon: '⛑️' },
-  ],
-  faces: [
-    { id: 20, name: 'Happy', type: 'face', colorable: false, category: 'face', emoji: '😊', icon: '😊' },
-    { id: 21, name: 'Sad', type: 'face', colorable: false, category: 'face', emoji: '😢', icon: '😢' },
-    { id: 22, name: 'Angry', type: 'face', colorable: false, category: 'face', emoji: '😠', icon: '😠' },
-    { id: 23, name: 'Surprised', type: 'face', colorable: false, category: 'face', emoji: '😲', icon: '😲' },
-    { id: 24, name: 'Wink', type: 'face', colorable: false, category: 'face', emoji: '😉', icon: '😉' },
-  ]
+// Importar todas as imagens
+import hat1 from '../assets/items/hat1.png';
+import hat2 from '../assets/items/hat2.png';
+import hat3 from '../assets/items/hat3.png';
+
+
+export const characterTabConfig = {
+  hats: { icon: '👒', title: 'Hats', category: 'head' },
+  tops: { icon: '👕', title: 'Tops', category: 'torso' },
+  pants: { icon: '👖', title: 'Pants', category: 'legs' },
+  shoes: { icon: '👟', title: 'Shoes', category: 'feet' },
+  accessories: { icon: '👓', title: 'Accessories', category: 'accessory' },
+  colors: { icon: '🎨', title: 'Colors', category: 'colors' }
 };
 
-// Tab configuration with icons
-export const characterTabConfig = {
-  tops: { icon: '👕', title: 'Tops' },
-  bottoms: { icon: '👖', title: 'Bottoms' },
-  hair: { icon: '💇', title: 'Hair' },
-  hats: { icon: '🧢', title: 'Hats' },
-  faces: { icon: '😊', title: 'Faces' }
+export const characterToolbarItems = {
+  hats: [
+    { id: 'hat1', name: 'Baseball Cap', image: hat1, type: 'hat' },
+    { id: 'hat2', name: 'Top Hat', image: hat2, type: 'hat' },
+    { id: 'hat3', name: 'Crown', image: hat3, type: 'hat' }
+  ],
+  tops: [
+    { id: 'top1', name: 'T-Shirt', image: hat1, type: 'top' },
+    { id: 'top2', name: 'Jacket', image: hat2, type: 'top' },
+    { id: 'top3', name: 'Dress', image: hat3, type: 'top' }
+  ],
+  pants: [
+    { id: 'pants1', name: 'Jeans', image: hat1, type: 'pants' },
+    { id: 'pants2', name: 'Shorts', image: hat2, type: 'pants' },
+    { id: 'pants3', name: 'Skirt', image: hat3, type: 'pants' }
+  ],
+  shoes: [
+    { id: 'shoes1', name: 'Sneakers', image: hat1, type: 'shoes' },
+    { id: 'shoes2', name: 'Boots', image: hat2, type: 'shoes' },
+    { id: 'shoes3', name: 'Sandals', image: hat3, type: 'shoes' }
+  ],
+  accessories: [
+    { id: 'acc1', name: 'Glasses', image: hat1, type: 'accessory' },
+    { id: 'acc2', name: 'Watch', image: hat2, type: 'accessory' },
+    { id: 'acc3', name: 'Necklace', image: hat3, type: 'accessory' }
+  ],
+  colors: [
+    { id: 'color1', name: 'Red', color: '#FF0000', type: 'color' },
+    { id: 'color2', name: 'Green', color: '#00FF00', type: 'color' },
+    { id: 'color3', name: 'Blue', color: '#0000FF', type: 'color' },
+    { id: 'color4', name: 'Yellow', color: '#FFFF00', type: 'color' },
+    { id: 'color5', name: 'Magenta', color: '#FF00FF', type: 'color' },
+    { id: 'color6', name: 'Cyan', color: '#00FFFF', type: 'color' },
+    { id: 'color7', name: 'Orange', color: '#FFA500', type: 'color' },
+    { id: 'color8', name: 'Purple', color: '#800080', type: 'color' },
+    { id: 'color9', name: 'Pink', color: '#FFC0CB', type: 'color' },
+    { id: 'color10', name: 'Brown', color: '#A52A2A', type: 'color' },
+    { id: 'color11', name: 'Black', color: '#000000', type: 'color' },
+    { id: 'color12', name: 'White', color: '#FFFFFF', type: 'color' }
+  ]
 };
 
 export const scenarioTabConfig = {
@@ -80,13 +91,6 @@ export const scenarioToolbarItems = {
     { id: 404, name: 'School', type: 'building', resizable: true, rotatable: false, category: 'building', emoji: '🏫' },
   ]
 };
-
-export const colorPalette = [
-  '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF',
-  '#FFA500', '#800080', '#FFC0CB', '#A52A2A', '#FFFFFF', '#000000',
-  '#FF6B35', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD',
-  '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA'
-];
 
 export const sampleCharacters = [
   { id: 1, name: 'Hero', type: 'character', category: 'character', emoji: '🦸‍♂️' },

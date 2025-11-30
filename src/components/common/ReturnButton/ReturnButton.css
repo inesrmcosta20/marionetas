@@ -2,11 +2,16 @@
   font-size: 40px;
   cursor: pointer;
   margin-bottom: 20px;
-  padding: 10px;
-  border-radius: 50%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
   background: #f8f9fa;
   border: 2px solid #dee2e6;
   transition: all 0.2s ease;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+
 }
 
 .return-button:hover {

@@ -1,44 +1,39 @@
 .character-creation-page {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr;
   height: 100vh;
   width: 100vh;
   box-sizing: border-box;
   background: #ffffff;
-  gap: 0;
   position: relative;
   overflow: hidden;
 }
 
 .left-side-tabs {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 15px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   z-index: 100;
-  
-}
-
-.tab-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  height: 100%;
+  width: 100px;
+  align-content: start;
 }
 
 .right-side-tabs {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 15px;
+  display: grid;
+  grid-template-rows: 1fr auto;
   z-index: 100;
-  padding-left: 10px;
+  height: 100%;
+  align-content: space-between;
 }
 
 .character-body-area {
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .color-picker-expanded {
@@ -64,4 +59,22 @@
 .color-swatch-expanded:hover {
   transform: scale(1.1);
   border-color: #333;
+}
+
+/* Estilos específicos para a grid da esquerda */
+.left-side-tabs > :first-child {
+  grid-row: 1; /* ReturnButton no topo */
+}
+
+.left-side-tabs > :last-child {
+  grid-row: 3; /* TrashButton na base */
+}
+
+/* Estilos específicos para a grid da direita */
+.right-side-tabs > :first-child {
+  grid-row: 1; /* Characters tab */
+}
+
+.right-side-tabs > :last-child {
+  grid-row: 2; /* DoneButton na base */
 }

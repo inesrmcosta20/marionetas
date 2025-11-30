@@ -1,22 +1,44 @@
 import './CharacterBody.css';
+import CharacterItem from './CharacterItem';
 
-function CharacterBody({ characterItems, onItemDrop, onItemSelect }) {
+function CharacterBody({ characterItems, onItemDrop, onItemSelect, selectedItem, onItemUpdate }) {
   const handleDragOver = (e) => {
     e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const getPositionForItemType = (itemType) => {
+    const positionMap = {
+      'hat': { x: 50, y: 15 },
+      'top': { x: 50, y: 40 },
+      'pants': { x: 50, y: 65 },
+      'shoes': { x: 50, y: 85 },
+      'accessory': { x: 50, y: 30 }
+    };
+    
+    return positionMap[itemType] || { x: 50, y: 50 };
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const itemData = e.dataTransfer.getData('application/json');
+    
     if (itemData) {
-      const item = JSON.parse(itemData);
-      const rect = e.currentTarget.getBoundingClientRect();
-      const position = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      };
-      onItemDrop({ ...item, position });
+      try {
+        const item = JSON.parse(itemData);
+        const position = getPositionForItemType(item.type);
+        
+        console.log('📦 Item dropped:', item);
+        onItemDrop({ ...item, position });
+        
+      } catch (error) {
+        console.error('❌ Error parsing dropped item:', error);
+      }
     }
+  };
+
+  const handleItemUpdate = (updatedItem) => {
+    onItemUpdate(updatedItem);
   };
 
   return (
@@ -40,19 +62,14 @@ function CharacterBody({ characterItems, onItemDrop, onItemSelect }) {
       </div>
       
       {/* Placed items */}
-      {characterItems.map((item, index) => (
-        <div
-          key={index}
-          className="character-item"
-          style={{
-            left: item.position.x,
-            top: item.position.y,
-            color: item.color
-          }}
-          onClick={() => onItemSelect(item)}
-        >
-          {item.name}
-        </div>
+      {characterItems.map((item) => (
+        <CharacterItem
+          key={item.id}
+          item={item}
+          isSelected={selectedItem?.id === item.id}
+          onSelect={onItemSelect}
+          onUpdate={handleItemUpdate}
+        />
       ))}
     </div>
   );

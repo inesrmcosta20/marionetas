@@ -8,15 +8,6 @@
   justify-content: center;
 }
 
-.character-left,
-.character-right {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
 .character-left {
   background-color: #f8f9fa;
   transform: rotate(90deg);

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import './Carousel.css';
 
-function Carousel({ items = [], onItemSelect, type = 'items', onAddNew }) {
+function Carousel({ items = [], onItemSelect, type = 'items', onAddNew, selectedColor }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef(null);
 
@@ -65,60 +65,86 @@ function Carousel({ items = [], onItemSelect, type = 'items', onAddNew }) {
                 className="carousel-item"
                 draggable
                 onDragStart={(e) => {
-                  e.dataTransfer.setData('application/json', JSON.stringify(item));
+                  const itemData = JSON.stringify({
+                    ...item,
+                    id: item.id || Date.now() + index
+                  });
+                  e.dataTransfer.setData('application/json', itemData);
+                  e.dataTransfer.effectAllowed = 'copy';
                 }}
                 title={item.name}
               >
                 <div className="item-preview">
-                  {item.emoji || '👕'}
+                  {item.image ? (
+                    <img 
+                      src={item.image} 
+                      alt={item.name}
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'contain'
+                      }}
+                    />
+                  ) : (
+                    <span>{item.emoji || '👕'}</span>
+                  )}
                 </div>
                 <span className="item-name">{item.name}</span>
               </div>
             ))}
           </>
-        ) : (
-          // Management Carousel (for created characters/scenarios)
+        ) : type === 'colors' ? (
+          // Colors Carousel
           <>
             {items.map((item, index) => (
               <div
                 key={item.id || index}
-                className="carousel-item management-item"
+                className={`carousel-item color-item ${selectedColor === item.color ? 'color-selected' : ''}`}
                 onClick={() => onItemSelect(item)}
+                title={item.name}
               >
-                <div className="item-preview">
-                  {item.emoji || '👤'}
-                </div>
+                <div 
+                  className="item-preview color-preview"
+                  style={{ backgroundColor: item.color }}
+                />
                 <span className="item-name">{item.name}</span>
               </div>
             ))}
-            {/* Add New Button */}
-            <div 
-              className="carousel-item add-new-item"
-              onClick={onAddNew}
-            >
-              <div className="item-preview">
-                +
-              </div>
-              <span className="item-name">
-                {type === 'characters' ? 'New Character' : 'New Scenario'}
-              </span>
-            </div>
           </>
-        )}
-      </div>
-
-      {/* Dots Indicator */}
-      {items.length > 1 && (
-        <div className="carousel-dots">
-          {items.map((_, index) => (
-            <button
-              key={index}
-              className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => scrollToIndex(index)}
-            />
+        ) : type === 'characters' ? (
+        // Characters Carousel
+        <>
+          {items.map((character, index) => (
+            <div
+              key={character.id || index}
+              className="carousel-item management-item"
+              onClick={() => onItemSelect(character)}
+              title={`${character.name} (${character.items?.length || 0} items)`}
+            >
+              <div className="item-preview character-preview">
+                {character.emoji || '👤'}
+                {character.items && character.items.length > 0 && (
+                  <div className="character-badge">
+                    {character.items.length}
+                  </div>
+                )}
+              </div>
+              <span className="item-name">{character.name}</span>
+            </div>
           ))}
-        </div>
-      )}
+          {/* Add New Button */}
+          <div 
+            className="carousel-item add-new-item"
+            onClick={onAddNew}
+          >
+            <div className="item-preview">
+              +
+            </div>
+            <span className="item-name">New Character</span>
+          </div>
+        </>
+        ) : null}
+      </div>
     </div>
   );
 }

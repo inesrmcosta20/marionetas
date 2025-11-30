@@ -1,0 +1,27 @@
+.character-item {
+  position: absolute;
+  z-index: 10;
+  user-select: none;
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  cursor: move; /* Cursor de drag para o container */
+}
+
+.character-item.selected {
+  box-shadow: 0 0 0 3px #007bff;
+}
+
+.item-canvas {
+  display: block;
+  background: transparent;
+  pointer-events: auto; /* Garantir que eventos do canvas funcionem */
+}
+
+.character-item.has-color {
+  cursor: default; /* Muda cursor quando tem cor */
+}
+
+.character-item:not(.has-color) {
+  cursor: move; /* Cursor de drag apenas quando não tem cor */
+}
