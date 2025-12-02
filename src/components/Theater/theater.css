@@ -1,0 +1,33 @@
+.theater {
+  display: flex;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #ffffff;
+  gap: 20px;
+}
+
+.theater-left {
+  width: 80px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.theater-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.theater h1 {
+  font-size: 36px;
+  margin: 0;
+}
+
+.theater-sub {
+  color: #555;
+  font-size: 16px;
+}
