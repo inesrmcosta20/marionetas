@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Homepage.css';
 import CharacterCreation from '../CharacterCreation/CharacterCreation';
 import ScenarioCreation from '../ScenarioCreation/ScenarioCreation';
+import Theater from '../Theater/theater';
 import Button from '../common/Button/Button';
 
 function Homepage() {
@@ -22,9 +23,8 @@ function Homepage() {
   };
 
   const handleScenarioComplete = () => {
-    // Handle theater completion
-    setCurrentView('homepage');
-    alert('Theater created successfully!');
+    // Navigate to Theater view after completing scenario
+    setCurrentView('theater');
   };
 
   if (currentView === 'character-creation') {
@@ -43,6 +43,12 @@ function Homepage() {
         onComplete={handleScenarioComplete}
         characters={createdCharacters}
       />
+    );
+  }
+
+  if (currentView === 'theater') {
+    return (
+      <Theater onBack={() => setCurrentView('scenario-creation')} />
     );
   }
 
