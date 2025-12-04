@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import './CharacterCreation.css';
 import OneCharacterCreation from './OneCharacterCreation/OneCharacterCreation';
@@ -135,6 +136,7 @@ function CharacterCreation({ onBack, onComplete }) {
           onSwitchCharacter={(char) => handleSwitchCharacter(char, 'left')}
           isActivePanel={true}
           panelSide="left"
+          panelId="left-panel" // ← NOVO: Identificador único
         />
       </div>
       <div className="character-right">
@@ -148,6 +150,7 @@ function CharacterCreation({ onBack, onComplete }) {
           onSwitchCharacter={(char) => handleSwitchCharacter(char, 'right')}
           isActivePanel={true}
           panelSide="right"
+          panelId="right-panel" // ← NOVO: Identificador único
         />
       </div>
     </div>

@@ -1,3 +1,4 @@
+
 .character-body {
   position: relative;
   width: 400px;  /* Aumentado de 300px para 400px */
@@ -52,4 +53,20 @@
   width: 40px; /* Aumentado de 30px para 40px */
   height: 100px; /* Aumentado de 80px para 100px */
   border: 2px solid #333;
+}
+
+/* Drop hint */
+.drop-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  pointer-events: none;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 20px;
+  border-radius: 10px;
 }

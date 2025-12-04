@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import './OneCharacterCreation.css';
 import ReturnButton from '../../common/ReturnButton/ReturnButton';
@@ -17,7 +18,8 @@ function OneCharacterCreation({
   onAddNewCharacter,
   onSwitchCharacter,
   isActivePanel = true,
-  panelSide = 'left'
+  panelSide = 'left',
+  panelId // ← NOVO: Recebe identificador único
 }) {
   const [characterItems, setCharacterItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -32,13 +34,13 @@ function OneCharacterCreation({
   // Carrega o personagem atual quando muda
   useEffect(() => {
     if (initialCharacter) {
-      console.log('📥 Loading character:', initialCharacter.name, 'Panel:', panelSide, 'Items:', initialCharacter.items?.length || 0);
+      console.log(`📥 [${panelId}] Loading character:`, initialCharacter.name, 'Items:', initialCharacter.items?.length || 0);
       setCurrentCharacter(initialCharacter);
       setCharacterItems(initialCharacter.items || []);
       setSelectedItem(null);
       setSelectedColor(null);
     }
-  }, [initialCharacter, panelSide]);
+  }, [initialCharacter, panelSide, panelId]);
 
   // Salva automaticamente quando characterItems muda
   useEffect(() => {
@@ -57,7 +59,7 @@ function OneCharacterCreation({
         isSaved: true
       };
       
-      console.log('💾 Auto-saving character:', currentCharacter.name, 'Items count:', characterItems.length);
+      console.log(`💾 [${panelId}] Auto-saving character:`, currentCharacter.name, 'Items count:', characterItems.length);
       
       if (onSaveCharacter) {
         onSaveCharacter(characterToSave);
@@ -69,73 +71,83 @@ function OneCharacterCreation({
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [characterItems, currentCharacter, onSaveCharacter]);
+  }, [characterItems, currentCharacter, onSaveCharacter, panelId]);
 
   const handleItemDrop = (item) => {
+    console.log(`📦 [${panelId}] Handle item drop received:`, item);
     let updatedItems;
     
+    // Se o item já existe (tem id), atualiza apenas a posição
     if (item.id && characterItems.some(i => i.id === item.id)) {
-      // Atualiza item existente (posição)
+      console.log(`📍 [${panelId}] Updating existing item position`);
       updatedItems = characterItems.map(i => 
         i.id === item.id ? { ...i, position: item.position } : i
       );
-      console.log('📍 Item position updated');
     } else {
-      // Adiciona novo item
+      // Adiciona novo item com id único
       const newItem = {
         ...item,
-        id: Date.now() + Math.random(),
-        position: item.position || item.defaultPosition || { x: 50, y: 50 },
+        id: `${item.type}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        position: item.position || { x: 50, y: 50 },
       };
       
+      console.log(`➕ [${panelId}] Adding new item:`, newItem);
+      
+      // Remove outros itens do mesmo tipo (exceto cores)
       if (item.type !== 'color') {
-        // Remove outros itens do mesmo tipo (exceto cores)
         const filteredItems = characterItems.filter(i => i.type !== newItem.type);
         updatedItems = [...filteredItems, newItem];
         setSelectedItem(newItem);
-        console.log('➕ New item added');
       } else {
-        updatedItems = [...characterItems];
+        updatedItems = [...characterItems, newItem];
       }
     }
     
     setCharacterItems(updatedItems);
+    console.log(`📊 [${panelId}] Character items after update:`, updatedItems);
   };
 
   const handleColorSelect = (colorItem) => {
-    console.log('🎨 Color clicked:', colorItem.color, 'Current selected:', selectedColor);
+  console.log(`🎨 [${panelId}] Color clicked:`, colorItem.color, 'Current selected:', selectedColor);
+  
+  // Se clicou na mesma cor, desseleciona
+  if (selectedColor === colorItem.color) {
+    console.log(`🎨 [${panelId}] Color deselected`);
+    setSelectedColor(null);
     
-    // Se clicou na mesma cor, desseleciona
-    if (selectedColor === colorItem.color) {
-      console.log('🎨 Color deselected');
-      setSelectedColor(null);
-      
-      if (selectedItem) {
-        const updatedItems = characterItems.map(item =>
-          item.id === selectedItem.id ? { ...item, color: null } : item
-        );
-        setCharacterItems(updatedItems);
-      }
-      return;
-    }
-    
-    // Seleciona a nova cor
-    console.log('🎨 New color selected:', colorItem.color);
-    setSelectedColor(colorItem.color);
-    
-    // Aplica ao item selecionado
     if (selectedItem) {
-      console.log('🔄 Applying color to item:', selectedItem.name);
       const updatedItems = characterItems.map(item =>
-        item.id === selectedItem.id ? { ...item, color: colorItem.color } : item
+        item.id === selectedItem.id ? { 
+          ...item, 
+          color: null,
+          paintedImage: null // ← Remove a imagem pintada
+        } : item
       );
       setCharacterItems(updatedItems);
     }
-  };
-
-  // ... restante do código permanece igual ...
+    return;
+  }
+  
+  // Seleciona a nova cor
+  console.log(`🎨 [${panelId}] New color selected:`, colorItem.color);
+  setSelectedColor(colorItem.color);
+  
+  // Aplica ao item selecionado
+  if (selectedItem) {
+    console.log(`🔄 [${panelId}] Applying color to item:`, selectedItem.name);
+    const updatedItems = characterItems.map(item =>
+      item.id === selectedItem.id ? { 
+        ...item, 
+        color: colorItem.color,
+        // Não limpa paintedImage aqui - mantém o que foi pintado
+      } : item
+    );
+    setCharacterItems(updatedItems);
+  }
+};
 
   const handleItemUpdate = (updatedItem) => {
+    console.log(`✏️ [${panelId}] Updating item:`, updatedItem.name);
     const updatedItems = characterItems.map(item =>
       item.id === updatedItem.id ? updatedItem : item
     );
@@ -144,7 +156,6 @@ function OneCharacterCreation({
     if (selectedItem && selectedItem.id === updatedItem.id) {
       setSelectedItem(updatedItem);
     }
-    
   };
 
   const handleTrashDrop = (itemData) => {
@@ -154,16 +165,14 @@ function OneCharacterCreation({
       setCharacterItems(updatedItems);
       setSelectedItem(null);
       setSelectedColor(null);
-      console.log('🗑️ Item removed');
-      
-
+      console.log(`🗑️ [${panelId}] Item removed:`, item.name);
     } catch (error) {
-      console.error('❌ Error parsing item for trash:', error);
+      console.error(`❌ [${panelId}] Error parsing item for trash:`, error);
     }
   };
 
   const handleItemSelect = (item) => {
-    console.log('📌 Item selected:', item.name, 'Current color:', item.color);
+    console.log(`📌 [${panelId}] Item selected:`, item.name, 'Current color:', item.color);
     setSelectedItem(item);
     
     if (item.color) {
@@ -174,14 +183,16 @@ function OneCharacterCreation({
   };
 
   const toggleTab = (tabName) => {
+    console.log(`📂 [${panelId}] Toggling tab:`, tabName, 'Current open:', openTab);
     setOpenTab(openTab === tabName ? null : tabName);
   };
 
   const handleAddCharacter = () => {
+    console.log(`👥 [${panelId}] Add character clicked`);
     if (onAddNewCharacter) {
       const newCharacter = onAddNewCharacter();
       if (newCharacter) {
-        console.log('👥 New character created:', newCharacter);
+        console.log(`👥 [${panelId}] New character created:`, newCharacter);
         // Limpa timeout pendente
         if (saveTimeoutRef.current) {
           clearTimeout(saveTimeoutRef.current);
@@ -200,7 +211,7 @@ function OneCharacterCreation({
   };
 
   const handleCharacterSelect = (character) => {
-    console.log('👤 Character selected:', character.name);
+    console.log(`👤 [${panelId}] Character selected:`, character.name);
     
     // Limpa timeout pendente antes de mudar
     if (saveTimeoutRef.current) {
@@ -219,6 +230,7 @@ function OneCharacterCreation({
   };
 
   const handleDoneClick = () => {
+    console.log(`✅ [${panelId}] Done clicked`);
     // Força save imediato antes de completar
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
@@ -237,7 +249,7 @@ function OneCharacterCreation({
       isSaved: true
     };
     
-    console.log('✅ Character completed:', completedCharacter);
+    console.log(`✅ [${panelId}] Character completed:`, completedCharacter);
     
     // Garante que está guardado
     if (onSaveCharacter) {
@@ -260,7 +272,7 @@ function OneCharacterCreation({
   }, []);
 
   return (
-    <div className="character-creation-page">
+    <div className="character-creation-page" data-panel-id={panelId}>
       {/* Left Side - Grid interna */}
       <div className="left-side-tabs">
         <ReturnButton onClick={onBack} />
@@ -269,13 +281,14 @@ function OneCharacterCreation({
           {/* Clothing/Accessory Tabs */}
           {Object.entries(characterTabConfig).map(([tabKey, config]) => (
             <SideTab
-              key={tabKey}
+              key={`${panelId}-${tabKey}`} // ← CHAVE ÚNICA
               icon={config.icon}
               title={config.title}
               isOpen={openTab === tabKey}
               onToggle={() => toggleTab(tabKey)}
               itemCount={characterToolbarItems[tabKey]?.length || 0}
               position="left"
+              panelId={panelId} // ← Passa panelId para o SideTab
             >
               {tabKey === 'colors' ? (
                 <Carousel
@@ -283,19 +296,21 @@ function OneCharacterCreation({
                   onItemSelect={handleColorSelect}
                   type="colors"
                   selectedColor={selectedColor}
+                  panelId={panelId} // ← Passa panelId para o Carousel
                 />
               ) : (
                 <Carousel
                   items={characterToolbarItems[tabKey] || []}
                   onItemSelect={handleItemDrop}
                   type="items"
+                  panelId={panelId} // ← Passa panelId para o Carousel
                 />
               )}
             </SideTab>
           ))}
         </div>
 
-        <TrashButton onDrop={handleTrashDrop} />
+        <TrashButton onDrop={handleTrashDrop} panelId={panelId} />
       </div>
 
       {/* Center - Character Area */}
@@ -306,6 +321,7 @@ function OneCharacterCreation({
           onItemSelect={handleItemSelect}
           onItemUpdate={handleItemUpdate}
           selectedItem={selectedItem}
+          panelId={panelId} // ← Passa panelId para o CharacterBody
         />
         
         {/* Warning message */}
@@ -337,6 +353,7 @@ function OneCharacterCreation({
           onToggle={() => toggleTab('characters')}
           itemCount={existingCharacters.length}
           position="right"
+          panelId={panelId} // ← Passa panelId para o SideTab
         >
           <Carousel
             items={existingCharacters}
@@ -344,12 +361,14 @@ function OneCharacterCreation({
             onAddNew={handleAddCharacter}
             type="characters"
             showAddButton={characterItems.length > 0}
+            panelId={panelId} // ← Passa panelId para o Carousel
           />
         </SideTab>
 
         <DoneButton 
           onClick={handleDoneClick}
           disabled={characterItems.length === 0}
+          panelId={panelId} // ← Passa panelId para o DoneButton
         />
       </div>
     </div>
