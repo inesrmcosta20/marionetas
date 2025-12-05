@@ -7,10 +7,12 @@
   gap: 20px;
 }
 
-.theater-left {
-  width: 80px;
-  display: flex;
-  align-items: flex-start;
+
+.theater .return-button {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
 }
 
 .theater-center {
@@ -30,4 +32,46 @@
 .theater-sub {
   color: #555;
   font-size: 16px;
+}
+
+/* Stage area inside the theater center where the square moves */
+
+
+/* Full-screen stage */
+.theater-stage {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #fdfdfd, #f6f7fb);
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.theater-rect {
+  position: absolute;
+  background: #ff4d4f;
+  border: 2px solid rgba(0,0,0,0.12);
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+  /* GPU-accelerated transform for smooth movement */
+  transition: transform 160ms cubic-bezier(.22,.9,.3,1);
+  will-change: transform;
+  transform: translate3d(0,0,0);
+}
+
+/* Movement pad container: fixed bottom-right and sized to 10% of viewport height */
+.movement-pad-container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 20vh; /* increased to 20vh per request */
+  width: 20vw; /* match height increase to keep similar aspect ratio */
+  padding: 8px;
+  box-sizing: border-box;
+  z-index: 1300;
 }
