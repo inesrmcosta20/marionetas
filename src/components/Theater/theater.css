@@ -75,3 +75,19 @@
   box-sizing: border-box;
   z-index: 1300;
 }
+
+/* Second pad on the bottom-left */
+.movement-pad-container.left {
+  left: 0;
+  right: auto;
+  bottom: 0;
+  height: 20vh;
+  width: 20vw;
+  padding: 8px;
+  box-sizing: border-box;
+  z-index: 1300;
+}
+
+.theater-rect-2 {
+  background: #4da3ff; /* different color */
+}

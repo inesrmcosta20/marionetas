@@ -6,6 +6,8 @@ function MovementPad({ value = { x: 0.5, y: 0.5 }, onChange }) {
 	const knobRef = useRef(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const [dragging, setDragging] = useState(false);
+	// ref to mark this instance as the active drag target (avoids stale closures)
+	const activeRef = useRef(false);
 
 	// measure container size (the container will be sized by CSS)
 	useEffect(() => {
@@ -44,6 +46,8 @@ function MovementPad({ value = { x: 0.5, y: 0.5 }, onChange }) {
 		if (!container) return;
 
 		const onMove = (e) => {
+			// only handle moves for the active drag instance
+			if (!activeRef.current) return;
 			const rect = container.getBoundingClientRect();
 			let clientX, clientY;
 			if (e.touches && e.touches[0]) {
@@ -63,6 +67,9 @@ function MovementPad({ value = { x: 0.5, y: 0.5 }, onChange }) {
 
 		const onUp = (e) => {
 			setDragging(false);
+			activeRef.current = false;
+			window.removeEventListener('pointermove', onMove);
+			window.removeEventListener('pointerup', onUp);
 			window.removeEventListener('mousemove', onMove);
 			window.removeEventListener('mouseup', onUp);
 			window.removeEventListener('touchmove', onMove);
@@ -73,6 +80,7 @@ function MovementPad({ value = { x: 0.5, y: 0.5 }, onChange }) {
 		const startDrag = (startEvent) => {
 			startEvent.preventDefault();
 			setDragging(true);
+			activeRef.current = true;
 			console.debug('MovementPad: startDrag', startEvent.type);
 
 			// prefer pointer events when available
