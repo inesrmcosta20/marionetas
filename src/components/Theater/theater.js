@@ -2,10 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import './theater.css';
 import ReturnButton from '../common/ReturnButton/ReturnButton';
 import MovementPad from './MovementPad/MovementPad';
+import images from '../../data/images';
 
-function Theater({ onBack }) {
+function Theater({ onBack, characters, scenario }) {
 	const stageRef = useRef(null);
 	const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
+
+	const scenarioImages = [images.hat1, images.hat2, images.hat3, images.hat1];
+	const listCharacters = characters;
+
 	// normalized position 0..1
 	// load saved positions from localStorage when available
 	const [pos, setPos] = useState(() => {
@@ -78,7 +83,8 @@ function Theater({ onBack }) {
 			</div>
 
 			{/* Full-viewport stage so the rectangle can move across entire screen */}
-			<div className="theater-stage" ref={stageRef}>
+			<div className="theater-stage" ref={stageRef} style={{ backgroundImage: `url(${scenarioImages[scenario-1]})` }}>
+				
 				<div
 					className="theater-rect"
 					style={{ width: rectWidth + 'px', height: rectHeight + 'px', transform: `translate3d(${tx}px, ${ty}px, 0)` }}

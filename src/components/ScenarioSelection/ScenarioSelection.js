@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ScenarioSelection.css';
 import Button from '../common/Button/Button';
 import images from '../../data/images';
 import DoneButton from '../common/DoneButton/DoneButton';
 
 
-function ScenarioSelection({ onBack , onComplete }) {
+function ScenarioSelection({ onBack , onComplete, initialScenario }) {
   const [selectedScenario, setSelectedScenario] = useState(null);
 
+  const scenarioImages = [images.hat1, images.hat2, images.hat3, images.hat1];
+
   const handleScenarioClick = (scenario) => {
+    console.log('clicked: ', scenario);
     setSelectedScenario(scenario);
   };
 
-  const scenarioImages = [images.hat1, images.hat2, images.hat3, images.hat1];
+  const handleDoneClick = () => {
+    if (selectedScenario !== null){
+      if (onComplete)
+        onComplete(selectedScenario);
+    }else{
+      console.log('nothing selected');
+    }
+  }
+
+  useEffect(() => {
+    const scenario = initialScenario ? initialScenario : null;
+    setSelectedScenario(scenario);
+
+  },[initialScenario]);
 
   return (
     <div className="scenario-selection">
@@ -39,7 +55,7 @@ function ScenarioSelection({ onBack , onComplete }) {
 
 
       <Button onClick={onBack}>Voltar</Button>
-      <DoneButton enabled={selectedScenario !== null} onClick={onComplete} />
+      <DoneButton onClick={handleDoneClick} />
     </div>
   );
 }

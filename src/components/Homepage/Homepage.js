@@ -17,6 +17,7 @@ function Homepage() {
   const [createdCharacters, setCreatedCharacters] = useState([]);
   // Estado para personagens em edição
   const [editingCharacters, setEditingCharacters] = useState([]);
+  const [chosenScenario, setChosenScenario] = useState([]);
 
   // Inicia novo teatro, indo para criação de personagem
   const handleNewTheater = () => {
@@ -37,7 +38,8 @@ function Homepage() {
   };
 
   // Quando termina a seleção de cenário
-  const handleScenarioComplete = () => {
+  const handleScenarioComplete = (scenario) => {
+    setChosenScenario(scenario)
     setCurrentView('theater');
   };
 
@@ -58,16 +60,18 @@ function Homepage() {
       <ScenarioSelection 
         onBack={() => setCurrentView('character-creation')}
         onComplete={handleScenarioComplete}
-        characters={createdCharacters}
+        initialScenario={chosenScenario ? chosenScenario : undefined}
       />
     );
   }
 
   // Renderiza a view do teatro
   if (currentView === 'theater') {
+    console.log('vou dar: ', chosenScenario);
     return (
       <Theater 
         characters={createdCharacters} 
+        scenario = {chosenScenario}
         onBack={() => setCurrentView('scenario-selection')} 
       />
     );
